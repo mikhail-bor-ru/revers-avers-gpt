@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Бросок монеты 5 рублей (3D)</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #1e1e1e;
+        color: white;
+        margin-top: 50px;
+    }
+
+    .scene {
+        width: 160px;
+        height: 160px;
+        margin: 30px auto;
+        perspective: 1000px;
+    }
+
+    .coin {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 1.2s ease-in-out;
+    }
+
+    .coin.flip {
+        transform: rotateY(1440deg);
+    }
+
+    .side {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        backface-visibility: hidden;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    /* ЗАМЕНИ ССЫЛКИ НА СВОИ КАРТИНКИ ПРИ НЕОБХОДИМОСТИ */
+    .heads {
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6b/5_rubles_2016_obverse.png');
+    }
+
+    .tails {
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/5_rubles_2016_reverse.png');
+        transform: rotateY(180deg);
+    }
+
+    button {
+        padding: 12px 25px;
+        font-size: 18px;
+        background: gold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: orange;
+    }
+</style>
+</head>
+<body>
+
+<h1>Бросок монеты 5 рублей (3D)</h1>
+
+<div class="scene">
+    <div id="coin" class="coin">
+        <div class="side heads"></div>
+        <div class="side tails"></div>
+    </div>
+</div>
+
+<button onclick="flipCoin()">Бросить монету</button>
+
+<h2 id="result"></h2>
+
+<script>
+function flipCoin() {
+    const coin = document.getElementById('coin');
+    const resultText = document.getElementById('result');
+
+    coin.classList.remove('flip');
+    void coin.offsetWidth; // перезапуск анимации
+
+    const isHeads = Math.random() < 0.5;
+
+    // случайное число оборотов + финальная сторона
+    const spins = 4; // количество полных вращений
+    const finalRotation = isHeads ? 0 : 180;
+
+    coin.style.transform = `rotateY(${spins * 360 + finalRotation}deg)`;
+
+    resultText.textContent = "Бросаем...";
+
+    setTimeout(() => {
+        resultText.textContent = isHeads ? 'Орёл' : 'Решка';
+    }, 1200);
+}
+</script>
+
+</body>
+</html>
