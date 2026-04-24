@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Бросок монеты 5 рублей (3D, оффлайн)</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #1e1e1e;
+        color: white;
+        margin-top: 50px;
+    }
+
+    .scene {
+        width: 160px;
+        height: 160px;
+        margin: 30px auto;
+        perspective: 1000px;
+    }
+
+    .coin {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+    }
+
+    .side {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        backface-visibility: hidden;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    /* ВСТРОЕННЫЕ base64 ИЗОБРАЖЕНИЯ (маленькие, но работают без интернета) */
+    .heads {
+        background-image: url('heads.png');
+    }
+
+    .tails {
+        background-image: url('tiles.png');
+        transform: rotateY(180deg);
+    }
+
+    button {
+        padding: 12px 25px;
+        font-size: 18px;
+        background: gold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: orange;
+    }
+</style>
+</head>
+<body>
+
+<h1>Бросок монеты (оффлайн)</h1>
+
+<div class="scene">
+    <div id="coin" class="coin">
+        <div class="side heads"></div>
+        <div class="side tails"></div>
+    </div>
+</div>
+
+<button onclick="flipCoin()">Бросить монету</button>
+
+<h2 id="result"></h2>
+
+<script>
+let currentRotation = 0;
+
+function flipCoin() {
+    const coin = document.getElementById('coin');
+    const resultText = document.getElementById('result');
+
+    const isHeads = Math.random() < 0.5;
+
+    const spins = 4;
+    const final = isHeads ? 0 : 180;
+
+    currentRotation += spins * 360 + final;
+
+    coin.style.transition = 'transform 1.2s ease-in-out';
+    coin.style.transform = `rotateY(${currentRotation}deg)`;
+
+    resultText.textContent = "Бросаем...";
+
+    setTimeout(() => {
+        resultText.textContent = isHeads ? 'Орёл' : 'Решка';
+    }, 1200);
+}
+</script>
+
+</body>
+</html>
